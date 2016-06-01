@@ -5,7 +5,7 @@
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {padding-top: 70px;}
+	body {padding-top: 70px;}
   </style>
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
@@ -15,31 +15,31 @@
 
   <!-- ZAČETEK: Menujska vrstica na vrhu spletne strani -->
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menujska-vrstica">
-          <span class="sr-only">Prikaži menu</span>
-          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-        </button>
-        <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
-        <!-- KONEC: Ime vaše aplikacije -->
-      </div>
-      <div class="collapse navbar-collapse" id="menujska-vrstica">
-        <ul class="nav navbar-nav">
-          <li><a href="opis.html">Opis ideje</a></li>
-          <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
-        </ul>
-      </div>
-    </div>
+	<div class="container">
+	  <div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menujska-vrstica">
+		  <span class="sr-only">Prikaži menu</span>
+		  <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+		</button>
+		<!-- ZAČETEK: Ime vaše aplikacije -->
+		<a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+		<!-- KONEC: Ime vaše aplikacije -->
+	  </div>
+	  <div class="collapse navbar-collapse" id="menujska-vrstica">
+		<ul class="nav navbar-nav">
+		  <li><a href="opis.html">Opis ideje</a></li>
+		  <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
+		  <li><a href="#">Generiranje podatkov</a></li>
+		</ul>
+	  </div>
+	</div>
   </nav>
   <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
 
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
-    <div class="row">
-    
+	<div class="row">
+	
 		<div class="col-sm-6">
 			<form>
 				Vnesi svoj EHR ID:<br>
@@ -56,7 +56,45 @@
 		</div>
 
 		<div class="col-sm-6">
-			lalalala
+			<div id="demo">
+				<script>
+					var x = document.getElementById("demo");
+					function getLocation() {
+					    if (navigator.geolocation) {
+					        navigator.geolocation.getCurrentPosition(showPosition);
+					    } else {
+					        x.innerHTML = "Geolocation is not supported by this browser.";
+					    }
+					}
+					
+					function showPosition(position) {
+					    x.innerHTML = "Latitude: " + position.coords.latitude +
+					    "<br>Longitude: " + position.coords.longitude;
+					}
+				</script>
+			</div>
+			<button onclick="getLocation()">Try it!</button>
+			<div id="map">
+				<script>
+					function initMap() {
+					  // Create a map object and specify the DOM element for display.
+					  var map = new google.maps.Map(document.getElementById('map'), {
+					    center: {lat: -34.397, lng: 150.644},
+					    scrollwheel: false,
+					    zoom: 8
+					  });
+					}
+
+				</script>
+
+
+			</div>
+			
+			
+
+
+
+
 
 
 		</div>
@@ -88,6 +126,9 @@
 		</div>
   </div>
   <!-- KONEC: Vsebina aplikacije -->
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8y0ST4tDKXRRMvGqSAFv4kfQ41tfEl7A&callback=initMap"
+    async defer></script>
 </body>
+
+ 
 </html>
