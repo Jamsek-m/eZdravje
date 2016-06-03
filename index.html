@@ -10,6 +10,7 @@
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 
@@ -29,7 +30,7 @@
 		<ul class="nav navbar-nav">
 		  <li><a href="opis.html">Opis ideje</a></li>
 		  <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-		  <li><a href="#">Generiranje podatkov</a></li>
+		  <li><a href="#" onclick="generate()">Generiranje podatkov</a></li>
 		</ul>
 	  </div>
 	</div>
@@ -38,66 +39,31 @@
 
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
-	<div class="row">
-	
-		<div class="col-sm-6">
-			<form>
-				Vnesi svoj EHR ID:<br>
-				<input type="text" name="ehrid" class="form-control"><br />
-				Vnesi svojo težo:<br />
-				<input type="number" name="teza" class="form-control" /><br />
-				Vnesi svojo višino:<br />
-				<input type="number" name="visina" placeholder="130" class="form-control" /><br />
-				Vnesi svojo telesno temperaturo:<br />
-				<input type="number" name="temperatura" class="form-control" /><br />
-				Vnesi svoj krvni tlak:<br />
-				<input type="number" name="krvniTlak" class="form-control" /><br />
-			</form>
-		</div>
 
-		<div class="col-sm-6">
-			<div id="demo">
-				<script>
-					var x = document.getElementById("demo");
-					function getLocation() {
-					    if (navigator.geolocation) {
-					        navigator.geolocation.getCurrentPosition(showPosition);
-					    } else {
-					        x.innerHTML = "Geolocation is not supported by this browser.";
-					    }
-					}
-					
-					function showPosition(position) {
-					    x.innerHTML = "Latitude: " + position.coords.latitude +
-					    "<br>Longitude: " + position.coords.longitude;
-					}
-				</script>
-			</div>
-			<button onclick="getLocation()">Try it!</button>
-			<div id="map">
-				<script>
-					function initMap() {
-					  // Create a map object and specify the DOM element for display.
-					  var map = new google.maps.Map(document.getElementById('map'), {
-					    center: {lat: -34.397, lng: 150.644},
-					    scrollwheel: false,
-					    zoom: 8
-					  });
-					}
-
-				</script>
-
-
-			</div>
-			
-			
+  	<div class="form-group">
+  		<label for="sel1">Izberi pacienta:</label>
+		<select class="form-control" id="sel1">
+    		<option value="0">Janez Novak</option>
+			<option value="1">Lojze Zelenko</option>
+			<option value="2">Ivan Grozni</option>
+		</select>
+  		<input type="submit" class="btn btn-default" onclick="vrniIdZaIzbranega()">
+	</div>
+	<hr>
+	<div>
+		Grafi<br>
+		<script>
+		google.charts.load('current', {'packages':['gauge']});
+		</script>
+		<button onclick="narisiGrafe()" class="btn btn-default">Narisi me!</button>
+		<div id="chart_div"></div>
 
 
 
 
-
-
-		</div>
+	</div>
+	<hr>
+	<div>Zemljevid</div>
 
 
 
@@ -121,9 +87,6 @@
 
 
 
-
-
-		</div>
   </div>
   <!-- KONEC: Vsebina aplikacije -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8y0ST4tDKXRRMvGqSAFv4kfQ41tfEl7A&callback=initMap"

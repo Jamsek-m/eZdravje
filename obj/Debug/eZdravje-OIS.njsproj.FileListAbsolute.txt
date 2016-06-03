@@ -1,2 +1,0 @@
-C:\Users\miha_\Documents\Visual Studio 2015\Projects\OIS\eZdravje\obj\Debug\eZdravje-OIS.njsprojResolveAssemblyReference.cache
-C:\Users\miha_\Documents\Visual Studio 2015\Projects\OIS\eZdravje\bin\Microsoft.NodejsTools.WebRole.dll

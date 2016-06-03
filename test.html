@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<title>Simple Map</title>
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta charset="utf-8">
+	<script src="knjiznice/js/jquery-2.2.3.min.js"></script>
+	<script src='bolnice.json'></script>
+	<style>
+	  html, body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	  }
+	  #map {
+		height: 100%;
+	  }
+	</style>
+  </head>
+  <body>
+
+	<script>  
+		function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			}
+		}
+
+		function showPosition(position) {
+			var x = position.coords.latitude;
+			var y = position.coords.longitude;
+			initMap(x,y);
+			init();
+		}
+
+		function initMap(x, y) {           
+			console.log("LOG: "+x+", "+y);
+			var location = {lat: x, lng: y};
+				var map = new google.maps.Map(document.getElementById('map'), {
+					center: {lat: x, lng: y},
+					zoom: 16
+			  	});
+			  	var marker = new google.maps.Marker({
+				    position: location,
+				    map: map,
+				    title: 'Your location.'
+			  	});
+			  	marker.setMap(map);
+		}
+
+		function init() {
+			loadJSON(function(response) {
+			// Parse JSON string into object
+			var actual_JSON = JSON.parse(response);
+			console.log("::::::");
+			console.log(actual_JSON.bolnice[0].ime);
+			});
+		}
+		
+
+		function loadJSON(callback) {   
+
+		    var xobj = new XMLHttpRequest();
+		    xobj.overrideMimeType("application/json");
+			xobj.open('GET', 'bolnice.json', true); // Replace 'my_data' with the path to your file
+			xobj.onreadystatechange = function () {
+				if (xobj.readyState == 4 && xobj.status == "200") {
+						// Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+					callback(xobj.responseText);
+				}
+			};
+			xobj.send(null);
+		}
+
+
+	</script>
+
+	<div> 
+		<button onclick="getLocation()">Klikni za polozaj!</button>
+	</div>  
+	<div id="mapholder" style="width:350px;height:350px;">
+		<div id="map"></div>
+	</div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8y0ST4tDKXRRMvGqSAFv4kfQ41tfEl7A&callback=initMap"
+	async defer></script>
+	
+  </body>
+</html>
