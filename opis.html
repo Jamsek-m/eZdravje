@@ -22,7 +22,7 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{ime vaše aplikacije}</a>
+        <a class="navbar-brand" href="index.html">Health-o-meter</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -45,7 +45,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno dodati <strong>osnovni opis ideje rešitve</strong> (kakšen je osnovni SCENARIJ UPORABE, KDO je ciljna publika, za kakšen NAMEN se aplikacija uporablja).</p><p class="text-muted">Opis naj ne bo daljši od 200 besed.</p>
+            <p>Osnovni uporabnik te aplikacije je pacient. Zasnovana je tako, da pacient vnese svoje podatke (v implementaciji sem izpustil del o vnosu podatkov), nakar se mu njegovi vitalni znaki vizualizirajo s prikazom priporočenih meja in vnešenimi podatki. Izračuna njegov ITM (indeks telesne mase) in mu pove ali je predebel ter pove ali so njegova telesna temperatura in krvni tlak, normalni. V primeru odstopanja od priporočenih vrednosti ga opozori, ter usmeri do najbližje zdravstvene ustanove (bolnice v mojem primeru).</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -55,7 +55,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je navesti zunanji vir podatkov (URL naslov), na kakšen način ste ga uporabili (neposredni API klic, uvožena statična datoteka ipd.) in kaj je bil namen uporabe (kako se vključuje v osnovno idejo aplikacije).</p>
+            <p>Podatek o lokacijah bolnišnic sem pridobil iz spletne strani <a href="http://www.abczdravja.si/index.php/bolnisnice-v-sloveniji">abczdravja.si</a>, nakar sem ga z Excelom ročno prepisal v CSV datoteko, le-to pa izvozil v JSON format, do katerega sem kasneje v aplikaciji dostopal. Uporabil sem pa še Google Maps API, za prikazovanje lokacij.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
@@ -75,7 +75,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno navesti uporabljeno tehniko vizualizacije podatkov (za pomoč lahko uporabite primer iz <a href="https://github.com/mbostock/d3/wiki/Gallery" target="_blank">D3.js galerije</a>) in zakaj je bila ta tehnika izbrana.</p>
+            <p>Za vizualizacijo znakov sem uporabil <a href="https://developers.google.com/chart/">Google Charts</a>. Za ta vir sem se odločil zaradi privlačnega izgleda in preprostosti uporabe.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
