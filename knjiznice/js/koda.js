@@ -194,7 +194,7 @@ function narisiGrafe(){
 	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Indeks telesne mase) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
 
 
-
+	var prvigraf = document.getElementById('prvigraf').innerHTML = "<h4 align='center'>Telesna temperatura</h4>";
  	google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
@@ -218,7 +218,7 @@ function narisiGrafe(){
 				//data.setValue(0,1,30);
         //chart.draw(data, options);
     }
-
+    var drugigraf = document.getElementById('drugigraf').innerHTML = "<h4 align='center'>Krvni pritisk</h4>";
     google.charts.setOnLoadCallback(drawBasic);
 	function drawBasic() {
 			  var data = google.visualization.arrayToDataTable([
@@ -227,7 +227,7 @@ function narisiGrafe(){
 				['Diastolični', diasTlak,90]
 			  ]);
 			  var options = {
-				title: 'Meritev krvnega pritiska',
+				
 				chartArea: {width: '50%'},
 				hAxis: {
 				  minValue: 0
