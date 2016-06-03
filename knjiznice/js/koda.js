@@ -175,6 +175,11 @@ function narisiGrafe(){
 	var bmi = racunajBMI(teza, visina).toFixed(2);
 	var BMIkat = povejBMIKat(bmi);
 
+	var mapHeader = document.getElementById('mapHeader');
+	var grafHeader = document.getElementById('grafHeader');
+	mapHeader.innerHTML = "<hr><h3 align='center'>Napotki za zdravljenje</h3>";
+	grafHeader.innerHTML = "<h3 align='center'>Vizualizacija vitalnih znakov</h3>";
+
 	var zdravjediv = document.getElementById('zdravje');
 	var pokazatelj = preveriZdravje(temp, sisTlak, diasTlak);
 	if(pokazatelj.startsWith('Super')){
@@ -186,7 +191,7 @@ function narisiGrafe(){
 
 
 	var bmidiv = document.getElementById('bmi');
-	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Body Mass Index) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
+	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Indeks telesne mase) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
 
 
 
