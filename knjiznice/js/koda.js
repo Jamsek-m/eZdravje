@@ -16,26 +16,29 @@ function izvediLogiko(){
 function racunajBMI(teza, visina){
 	visina = visina/100;
 	var BMI = (teza)/(visina*visina);
+	return BMI;
+}
+function povejBMIKat(BMI){
 	if(BMI <= 18.5){
-		return "podhranjenost";
+		return "Trpite za podhranjenostjo";
 	}
 	if(BMI > 18.5 && BMI <= 25){
-		return "normalno";
+		return "Imate normalen BMI";
 	}
 	if(BMI > 25 && BMI <= 30){
-		return "povečana telesna masa";
+		return "Imate povečano telesno maso";
 	}
 	if(BMI > 30 && BMI <= 40){
-		return "debelost";
+		return "Trpite za debelostjo";
 	}
 	if(BMI > 40){
-		return "huda debelost";
+		return "Trpite za hudo debelostjo";
 	}
 }
 
 var pacienti = [
-			{id: 1, ime: "Janez Novak", visina: 170, teza:80, temperatura:36.6, sisTlak:120, diasTlak:90, ehrId : ""},
-			{id: 2, ime: "Lojze Zelenko", visina: 170, teza:60, temperatura:42.0, sisTlak:120, diasTlak:90, ehrId : ""},
+			{id: 1, ime: "Janez Novak", visina: 170, teza:80, temperatura:36.6, sisTlak:120, diasTlak:60, ehrId : ""},
+			{id: 2, ime: "Lojze Zelenko", visina: 170, teza:60, temperatura:42.0, sisTlak:150, diasTlak:90, ehrId : ""},
 			{id: 3, ime: "Ivan Grozni", visina: 150, teza:100, temperatura:36.6, sisTlak:120, diasTlak:90, ehrId : ""}
 ];
 
@@ -129,10 +132,63 @@ function vrniIdZaIzbranega(){
 
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
 
+function preveriZdravje(temp, sisTlak, diasTlak){
+	var rezultatZdrav = "Super! Vaši vitalni znaki kažejo, da ste zdravi!";
+	var rezultatBolan = "";
+	var zdrav = true;
+	if(temp > 37 || temp < 36){
+		rezultatBolan += "Vaša telesna temperatura je previsoka! ";
+		zdrav = false;
+	}
+	if(sisTlak < 110 || sisTlak > 140){
+		zdrav = false;
+		rezultatBolan += "Vaš sistolični krvni tlak je ";
+		if(sisTlak < 110){
+			rezultatBolan += "prenizek! ";
+		} else {
+			rezultatBolan += "previsok! ";
+		}
+	}
+	if(diasTlak < 60 || diasTlak > 90){
+		zdrav = false;
+		rezultatBolan += "Vaš diastolični krvni tlak je ";
+		if(diasTlak < 60){
+			rezultatBolan += "prenizek! ";
+		} else {
+			rezultatBolan += "previsok! ";
+		}
+	}	
+	if(zdrav){
+		return rezultatZdrav;
+	}
+	return rezultatBolan;
+}
+
 
 function narisiGrafe(){
 	var id = document.getElementById('sel1').value;
 	var temp = pacienti[id].temperatura;
+	var sisTlak = pacienti[id].sisTlak;
+	var diasTlak = pacienti[id].diasTlak;
+	var teza = pacienti[id].teza;
+	var visina = pacienti[id].visina;
+	var bmi = racunajBMI(teza, visina).toFixed(2);
+	var BMIkat = povejBMIKat(bmi);
+
+	var zdravjediv = document.getElementById('zdravje');
+	var pokazatelj = preveriZdravje(temp, sisTlak, diasTlak);
+	if(pokazatelj.startsWith('Super')){
+		zdravjediv.innerHTML = "<div align='center' class='alert alert-success'>"+pokazatelj+"</div>";
+	}else {
+		zdravjediv.innerHTML = "<div align='center' class='alert alert-danger'>"+pokazatelj+"</div>";
+	}
+	
+
+
+	var bmidiv = document.getElementById('bmi');
+	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Body Mass Index) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
+
+
 
  	google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
@@ -162,8 +218,8 @@ function narisiGrafe(){
 	function drawBasic() {
 			  var data = google.visualization.arrayToDataTable([
 				['vrsta', 'vaša meritev', 'priporočena vrednost'],
-				['Sistolični', 150,120],
-				['Diastolični', 80,90]
+				['Sistolični', sisTlak,120],
+				['Diastolični', diasTlak,90]
 			  ]);
 			  var options = {
 				title: 'Meritev krvnega pritiska',
