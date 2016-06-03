@@ -137,16 +137,16 @@ function preveriZdravje(temp, sisTlak, diasTlak){
 	var rezultatBolan = "";
 	var zdrav = true;
 	if(temp > 37 || temp < 36){
-		rezultatBolan += "Vaša telesna temperatura je previsoka! ";
+		rezultatBolan += "Vaša telesna temperatura je previsoka!<br>";
 		zdrav = false;
 	}
 	if(sisTlak < 110 || sisTlak > 140){
 		zdrav = false;
 		rezultatBolan += "Vaš sistolični krvni tlak je ";
 		if(sisTlak < 110){
-			rezultatBolan += "prenizek! ";
+			rezultatBolan += "prenizek!<br>";
 		} else {
-			rezultatBolan += "previsok! ";
+			rezultatBolan += "previsok!<br>";
 		}
 	}
 	if(diasTlak < 60 || diasTlak > 90){
