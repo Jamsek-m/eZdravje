@@ -133,6 +133,7 @@ function vrniIdZaIzbranega(){
 function narisiGrafe(){
 	var id = document.getElementById('sel1').value;
 	var temp = pacienti[id].temperatura;
+
  	google.charts.setOnLoadCallback(drawChart);
     function drawChart() {
 
@@ -155,5 +156,27 @@ function narisiGrafe(){
         chart.draw(data, options);
 				//data.setValue(0,1,30);
         //chart.draw(data, options);
-      }
+    }
+
+    google.charts.setOnLoadCallback(drawBasic);
+	function drawBasic() {
+			  var data = google.visualization.arrayToDataTable([
+				['vrsta', 'vaša meritev', 'priporočena vrednost'],
+				['Sistolični', 150,120],
+				['Diastolični', 80,90]
+			  ]);
+			  var options = {
+				title: 'Meritev krvnega pritiska',
+				chartArea: {width: '50%'},
+				hAxis: {
+				  minValue: 0
+				},
+				colors:['red','green']
+			  };
+			  var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+			  chart.draw(data, options);
+	}
+
+
 }
+
