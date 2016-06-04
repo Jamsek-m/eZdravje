@@ -187,6 +187,21 @@ function narisiGrafe(){
 	}else {
 		zdravjediv.innerHTML = "<div align='center' class='alert alert-danger'>"+pokazatelj+"</div>";
 	}
+
+	var skrito = true;
+	var zdravjeDetail = document.getElementById('zdravjeDetail');
+	zdravjediv.addEventListener("click", function(){
+		if(skrito){
+	    	zdravjeDetail.innerHTML = "<div align='center' class='alert alert-info'>"+
+	    	"Vaša temperatura: <strong>"+temp+"</strong> | Normalna temperatura: <strong>36,6</strong><br>"+
+	    	"Vaš sistolični krvni tlak: <strong>"+sisTlak+"</strong> | Običajna meja: <strong>110 - 140</strong><br>"+
+	    	"Vaš diastolični krvni tlak: <strong>"+diasTlak+"</strong> | Običajna meja: <strong>60 - 90</strong></div>";
+	    	skrito = false;
+	    } else{
+	    	zdravjeDetail.innerHTML = "";
+	    	skrito = true;
+	    }
+	});
 	
 
 
@@ -237,7 +252,5 @@ function narisiGrafe(){
 			  var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
 			  chart.draw(data, options);
 	}
-
-
 }
 

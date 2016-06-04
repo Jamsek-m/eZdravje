@@ -49,7 +49,7 @@
 			  	});
 			  	marker.setMap(map);
 		}
-
+		//branje JSON
 		function init() {
 			loadJSON(function(response) {
 			// Parse JSON string into object
@@ -59,9 +59,7 @@
 			});
 		}
 		
-
 		function loadJSON(callback) {   
-
 		    var xobj = new XMLHttpRequest();
 		    xobj.overrideMimeType("application/json");
 			xobj.open('GET', 'bolnice.json', true); // Replace 'my_data' with the path to your file
