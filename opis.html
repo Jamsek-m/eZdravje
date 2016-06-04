@@ -45,7 +45,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
-            <p>Osnovni uporabnik te aplikacije je pacient. Zasnovana je tako, da pacient vnese svoje podatke (v implementaciji sem izpustil del o vnosu podatkov), nakar se mu njegovi vitalni znaki vizualizirajo s prikazom priporočenih meja in vnešenimi podatki. Izračuna njegov ITM (indeks telesne mase) in mu pove ali je predebel ter pove ali so njegova telesna temperatura in krvni tlak, normalni. V primeru odstopanja od priporočenih vrednosti ga opozori, ter usmeri do najbližje zdravstvene ustanove (bolnice v mojem primeru).</p>
+            <p>Osnovni uporabnik te aplikacije je pacient. Zasnovana je tako, da pacient vnese svoje podatke (v implementaciji sem izpustil del o vnosu podatkov, ker mi je na posvetu bilo povedano, da za ta primer to ni potrebno), nakar se mu njegovi vitalni znaki vizualizirajo s prikazom priporočenih meja in vnešenimi podatki. Izračuna njegov ITM (indeks telesne mase) in mu pove ali je predebel ter pove ali so njegova telesna temperatura in krvni tlak, normalni. V primeru odstopanja od priporočenih vrednosti ga opozori, ter usmeri do najbližje zdravstvene ustanove (bolnice v mojem primeru), oziroma do strani z nasveti za hujšanje če je ITM prevelik. Vnešeni podatki se tudi shranijo v bazo EHR, saj lahko v primeru, da bo potrebno zdravljenje, ta podatek zanima tudi zdravstveno osebje.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -55,7 +55,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p>Podatek o lokacijah bolnišnic sem pridobil iz spletne strani <a href="http://www.abczdravja.si/index.php/bolnisnice-v-sloveniji">abczdravja.si</a>, nakar sem ga z Excelom ročno prepisal v CSV datoteko, le-to pa izvozil v JSON format, do katerega sem kasneje v aplikaciji dostopal. Uporabil sem pa še Google Maps API, za prikazovanje lokacij.</p>
+            <p>Podatek o lokacijah bolnišnic sem pridobil iz spletne strani <a href="http://www.abczdravja.si/index.php/bolnisnice-v-sloveniji">abczdravja.si</a>, nakar sem ga z Excelom ročno prepisal v CSV datoteko, le-to pa izvozil v JSON format, do katerega sem kasneje v aplikaciji dostopal. Tako aplikacija dostopa do statične JSON datoteke, iz katere dobi lokacije bolnišnic. Uporabil sem pa še <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps API</a>, za prikazovanje lokacij.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
@@ -65,7 +65,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Master/detail načrtovalski vzorec -->
-            <p>Ko se izpiše obvestilo ali smo zdravi, oziroma katera vrednost ni v normalnih mejah, lahko kliknemo na to obvestilo in se nam izpiše informacija z našim stanjem. Ob ponovnem kliku se zapre.</p>
+            <p>Ko se izpiše obvestilo ali smo zdravi, oziroma katera vrednost ni v normalnih mejah, lahko kliknemo na to obvestilo in se nam izpiše informacija z našim stanjem, poleg pa priporočena stanja po katerih se je ta aplikacija ravnala. Ob ponovnem kliku se detail skrije.</p>
             <!-- KONEC: Master/detail načrtovalski vzorec -->
           </div>
         </div>
@@ -76,6 +76,7 @@
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
             <p>Za vizualizacijo znakov sem uporabil <a href="https://developers.google.com/chart/">Google Charts</a>. Za ta vir sem se odločil zaradi privlačnega izgleda in preprostosti uporabe.</p>
+            <p>Uporabil sem pa še tudi prej omenjen <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps API</a>.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>

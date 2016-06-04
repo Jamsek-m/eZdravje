@@ -7,6 +7,10 @@
   <style>
 	body {padding-top: 70px;}
   </style>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
@@ -40,7 +44,28 @@
 
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
-
+  	<style>
+  	.toast{
+  		/*width:200px;
+	    height:20px;*/
+	    height:auto;
+	    position:absolute;
+	    left:50%;
+	    margin-left:-100px;
+	    bottom:10px;
+	    background-color: #33cc33; /*383838*/
+	    color: #F0F0F0;
+	    font-family: Calibri;
+	    font-size: 20px;
+	    padding:10px;
+	    text-align:center;
+	    border-radius: 2px;
+	    -webkit-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
+	    -moz-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
+	    box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
+  	}
+  	</style>
+  	<div id="toaster" class="toast" style="display:none">Podatki so bili vnešeni v EHR bazo!</div>
   	<div class="form-group">
   		<label for="sel1">Izberi pacienta:</label>
 		<select class="form-control" id="sel1">

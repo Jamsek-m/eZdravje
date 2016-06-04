@@ -5,19 +5,12 @@ var queryUrl = baseUrl + '/query';
 var username = "ois.seminar";
 var password = "ois4fri";
 
-function izvediLogiko(){
-	//preveri znake in jih vpiši
-	//narisi graf
-	//narisi zemljevid
-	//dobi najblizjo lokacijo
-	//narisi najblizjo bolnico
-}
-
 function racunajBMI(teza, visina){
 	visina = visina/100;
 	var BMI = (teza)/(visina*visina);
 	return BMI;
 }
+
 function povejBMIKat(BMI){
 	if(BMI <= 18.5){
 		debelPacient = false;
@@ -42,9 +35,9 @@ function povejBMIKat(BMI){
 }
 
 var pacienti = [
-			{id: 1, ime: "Janez Novak", visina: 170, teza:80, temperatura:36.6, sisTlak:120, diasTlak:60, ehrId : ""},
-			{id: 2, ime: "Lojze Zelenko", visina: 170, teza:60, temperatura:42.0, sisTlak:150, diasTlak:90, ehrId : ""},
-			{id: 3, ime: "Ivan Grozni", visina: 150, teza:100, temperatura:36.6, sisTlak:120, diasTlak:90, ehrId : ""}
+			{id: 1, ime: "Janez Novak", visina: 170, teza:80, temperatura:42.0, sisTlak:120, diasTlak:60, ehrId : ""},
+			{id: 2, ime: "Lojze Zelenko", visina: 170, teza:60, temperatura:36.6, sisTlak:110, diasTlak:80, ehrId : ""},
+			{id: 3, ime: "Ivan Grozni", visina: 150, teza:100, temperatura:37.5, sisTlak:150, diasTlak:90, ehrId : ""}
 ];
 
 var debelPacient = false;
@@ -75,14 +68,12 @@ function getSessionId() {
  * @param stPacienta zaporedna številka pacienta (1, 2 ali 3)
  * @return ehrId generiranega pacienta
  */
-
  function generate(){
- 	for(var i = 0; i < 3; i++){
- 		generirajPodatke(i);
- 	}
+	for(var i = 0; i < 3; i++){
+		generirajPodatke(i);
+		dodajVitalneZnake(i);
+	}
  }
-
-
 
 function generirajPodatke(stPacienta) {
 	var seja = getSessionId();
@@ -102,34 +93,21 @@ function generirajPodatke(stPacienta) {
 				dateOfBirth: 0,
 				partyAdditionalInfo: [{key: "ehrId", value:ehrId}] 
 			};
-
 			$.ajax({
 				url: baseUrl + "/demographics/party",
 				type:"POST",
 				contentType: "application/json",
 				data: JSON.stringify(partyData),
 				success: function(party){
-					alert("dodano!\nIme: "+pacienti[stPacienta].ime+"\nID: "+ehrId);
+					//alert("dodano!\nIme: "+pacienti[stPacienta].ime+"\nID: "+ehrId);
 					pacienti[stPacienta].ehrId = ehrId;
 				},
 				error: function(err){
 					alert("Napaka!");
 				}
 			});
-
-
 		}
-
-
-
-
 	});
-
-	
-	
-
-	// TODO: Potrebno implementirati
-
 	return ehrId;
 }
 
@@ -140,11 +118,8 @@ function vrniIdZaIzbranega(){
 	return pacienti[id].ehrId;
 }
 
-
-// TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
-
 function preveriZdravje(temp, sisTlak, diasTlak){
-	var rezultatZdrav = "Super! Vaši vitalni znaki kažejo, da ste zdravi!";
+	var rezultatZdrav = "Super! Vaši vitalni znaki kažejo, da ste zdravi!<br>";
 	var rezultatBolan = "";
 	var zdrav = true;
 	if(temp > 37 || temp < 36){
@@ -164,19 +139,20 @@ function preveriZdravje(temp, sisTlak, diasTlak){
 		zdrav = false;
 		rezultatBolan += "Vaš diastolični krvni tlak je ";
 		if(diasTlak < 60){
-			rezultatBolan += "prenizek! ";
+			rezultatBolan += "prenizek!<br>";
 		} else {
-			rezultatBolan += "previsok! ";
+			rezultatBolan += "previsok!<br>";
 		}
 	}	
 	if(zdrav){
+		rezultatZdrav += "<span class='glyphicon glyphicon-chevron-down'></span>";
 		bolanPacient = false;
 		return rezultatZdrav;
 	}
+	rezultatBolan += "<span class='glyphicon glyphicon-chevron-down'></span>";
 	bolanPacient = true;
 	return rezultatBolan;
 }
-
 
 function narisiGrafe(){
 	var id = document.getElementById('sel1').value;
@@ -191,11 +167,7 @@ function narisiGrafe(){
 	var mapHeader = document.getElementById('mapHeader');
 	var grafHeader = document.getElementById('grafHeader');
 	grafHeader.innerHTML = "<h3 align='center'>Vizualizacija vitalnih znakov</h3>";
-
-	if(bolanPacient){
-		mapHeader.innerHTML = "<hr><h3 align='center'>Napotki za zdravljenje</h3>";
-	}
-	
+	mapHeader.innerHTML = "<hr><h3 align='center'>Napotki za zdravljenje</h3>";
 
 	var zdravjediv = document.getElementById('zdravje');
 	var pokazatelj = preveriZdravje(temp, sisTlak, diasTlak);
@@ -205,70 +177,81 @@ function narisiGrafe(){
 		zdravjediv.innerHTML = "<div align='center' class='alert alert-danger'>"+pokazatelj+"</div>";
 	}
 
+	var mapContent = document.getElementById('mapContent');
+	var vsebinaMap = "";
+	if(debelPacient){
+		vsebinaMap += "<p>Na podlagi vašega ITM, Vam predlagamo, da si ogledate naslednjo stran.</p>"+
+		"<a href='http://www.hujsanje.info/'><img src='pictures/hujsanje.info.png'></a><br><br>";
+	}
+	if(bolanPacient){
+		vsebinaMap += "<br><p>Vaši vitalni znaki odstopajo od priporočenih vrednost. Predlagamo vam, da obiščete najbližjo bolnišnico.</p><br>";
+	} else {
+		vsebinaMap += "<br><p>Čeprav so vaši vitalni znaki znotraj normalnih meja, je priporočljivo vedeti, kje je najbližja bolnišnica.</p><br>";
+	}
+
+	mapContent.innerHTML = vsebinaMap;
+
 	var skrito = true;
 	var zdravjeDetail = document.getElementById('zdravjeDetail');
 	zdravjediv.addEventListener("click", function(){
 		if(skrito){
-	    	zdravjeDetail.innerHTML = "<div align='center' class='alert alert-info'>"+
-	    	"Vaša temperatura: <strong>"+temp+"</strong> | Normalna temperatura: <strong>36,6</strong><br>"+
-	    	"Vaš sistolični krvni tlak: <strong>"+sisTlak+"</strong> | Običajna meja: <strong>110 - 140</strong><br>"+
-	    	"Vaš diastolični krvni tlak: <strong>"+diasTlak+"</strong> | Običajna meja: <strong>60 - 90</strong></div>";
-	    	skrito = false;
-	    } else{
-	    	zdravjeDetail.innerHTML = "";
-	    	skrito = true;
-	    }
+			zdravjeDetail.innerHTML = "<div align='center' class='alert alert-info'>"+
+			"Vaša temperatura: <strong>"+temp+"</strong> | Normalna temperatura: <strong>36.6</strong><br>"+
+			"Vaš sistolični krvni tlak: <strong>"+sisTlak+"</strong> | Običajna meja: <strong>110 - 140</strong><br>"+
+			"Vaš diastolični krvni tlak: <strong>"+diasTlak+"</strong> | Običajna meja: <strong>60 - 90</strong></div>";
+			skrito = false;
+		} else{
+			zdravjeDetail.innerHTML = "";
+			skrito = true;
+		}
 	});
 	
 	var bmidiv = document.getElementById('bmi');
-	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Indeks telesne mase) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
+	bmidiv.innerHTML = "<div align='center' class='well'>Vaš ITM (Indeks telesne mase) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
 
 	var prvigraf = document.getElementById('prvigraf').innerHTML = "<h4 align='center'>Telesna temperatura</h4>";
- 	google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
+	google.charts.setOnLoadCallback(drawChart);
+	function drawChart() {
 
-    	var data = google.visualization.arrayToDataTable([
-          ['Label', 'Value'],
-          ['°C', temp]
-        ]);
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['°C', temp]
+		]);
 
-        var options = {
-          width: 600, height: 180,
-          redFrom: 38, redTo: 60,
-          yellowFrom:37, yellowTo: 38,
-          minorTicks: 10,
-          min: 30,
-          max: 50
-        };
+		var options = {
+			width: 600, height: 180,
+			redFrom: 38, redTo: 60,
+			yellowFrom:37, yellowTo: 38,
+			minorTicks: 10,
+			min: 30,
+			max: 50
+		};
 
-        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+		var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
 
-        chart.draw(data, options);
-				//data.setValue(0,1,30);
-        //chart.draw(data, options);
-    }
-    var drugigraf = document.getElementById('drugigraf').innerHTML = "<h4 align='center'>Krvni pritisk</h4>";
-    google.charts.setOnLoadCallback(drawBasic);
+	var drugigraf = document.getElementById('drugigraf').innerHTML = "<h4 align='center'>Krvni pritisk</h4>";
+	google.charts.setOnLoadCallback(drawBasic);
 	function drawBasic() {
-			  var data = google.visualization.arrayToDataTable([
-				['vrsta', 'vaša meritev', 'priporočena vrednost'],
-				['Sistolični', sisTlak,120],
-				['Diastolični', diasTlak,90]
-			  ]);
-			  var options = {
-				
-				chartArea: {width: '50%'},
-				hAxis: {
-				  minValue: 0
-				},
-				colors:['red','green']
-			  };
-			  var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
-			  chart.draw(data, options);
+		var data = google.visualization.arrayToDataTable([
+			['vrsta', 'vaša meritev', 'priporočena vrednost'],
+			['Sistolični', sisTlak,120],
+			['Diastolični', diasTlak,90]
+		]);
+		var options = {
+			chartArea: {width: '50%'},
+			hAxis: {
+				minValue: 0
+			},
+			colors:['red','green']
+		};
+		var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+		chart.draw(data, options);
 	}
 	readTextFile("bolnice.json");
-
 }
+
 var obj;
 
 function readTextFile(file){
@@ -285,10 +268,9 @@ function readTextFile(file){
 				mx = parseFloat(obj.bolnice[7].lat);
 				my = parseFloat(obj.bolnice[7].lng);
 				console.log(mx+" : "+my);
-				initMap(mx,my);
-				getLocation();
-				initMarker(obj);
-				
+					initMap(mx,my);
+					getLocation();
+					initMarker(obj);		
 			}
 		}
 	}
@@ -359,7 +341,7 @@ function initMarker(obj){
 }
 
 function initMarkerLocation(latlng){
-	var image = 'myPosition-small.png';
+	var image = 'pictures/myPosition-small.png';
 	marker = new google.maps.Marker({
 		position: latlng,
 		map:map,
@@ -394,14 +376,57 @@ function najdiNajblizjoBolnico(obj){
 		var dLat = rad(mlat-x);
 		var dLong = rad(mlng-y);
 		var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(rad(x)) * Math.cos(rad(x)) * Math.sin(dLong/2) * Math.sin(dLong/2);
-        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        var d = R * c;
-        distances[i] = d;
-        if ( najblizjaBolnica == -1 || d < distances[najblizjaBolnica] ) {
-            najblizjaBolnica = i;
-        }
-    }
-	//alert(obj.bolnice[najblizjaBolnica].ime);
+			Math.cos(rad(x)) * Math.cos(rad(x)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+		var d = R * c;
+		distances[i] = d;
+		if ( najblizjaBolnica == -1 || d < distances[najblizjaBolnica] ) {
+			najblizjaBolnica = i;
+		}
+	}
 	return new google.maps.LatLng(obj.bolnice[najblizjaBolnica].lat, obj.bolnice[najblizjaBolnica].lng);
+}
+
+function dodajVitalneZnake(stPacienta){
+	seja = getSessionId();
+	var merilec = pacienti[stPacienta].ime;
+	var visina = pacienti[stPacienta].visina;
+	var teza = pacienti[stPacienta].teza;
+	var temperatura = pacienti[stPacienta].temperatura;
+	var sisTlak = pacienti[stPacienta].sisTlak;
+	var diasTlak = pacienti[stPacienta].diasTlak;
+	var ehrId = pacienti[stPacienta].ehrId;
+
+	$.ajaxSetup({
+		headers: {"Ehr-Session":seja}
+	});
+	var podatki = {
+		"ctx/language": "en",
+		"ctx/territory": "SI",
+		"vital_signs/height_length/any_event/body_height_length": visina,
+		"vital_signs/body_weight/any_event/body_weight": teza,
+		"vital_signs/body_temperature/any_event/temperature|magnitude": temperatura,
+		"vital_signs/body_temperature/any_event/temperature|unit": "°C",
+		"vital_signs/blood_pressure/any_event/systolic": sisTlak,
+		"vital_signs/blood_pressure/any_event/diastolic": diasTlak
+	};
+	var paramsZahteva = {
+		ehrId : ehrId,
+		templateId: 'Vital Signs',
+		format: 'FLAT',
+		commiter: merilec
+	};
+	$.ajax({
+		url: baseUrl + "/composition?" + $.param(paramsZahteva),
+		type: "POST",
+		contentType: "application/json",
+		data: JSON.stringify(podatki),
+		success: function(res){
+			$('#toaster').stop().fadeIn(400).delay(2000).fadeOut(400);
+		},
+		error: function(res){
+			$('#toaster').innerHTML = "Uh oh! Something went wrong.";
+			$('#toaster').stop().fadeIn(400).delay(2000).fadeOut(400);
+		}	
+	});
 }
