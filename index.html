@@ -28,7 +28,7 @@
 		  <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
 		</button>
 		<!-- ZAČETEK: Ime vaše aplikacije -->
-		<a class="navbar-brand" href="index.html">Health-o-meter</a>
+		<a class="navbar-brand" href="index.html">Health-o-Meter</a>
 		<!-- KONEC: Ime vaše aplikacije -->
 	  </div>
 	  <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -67,7 +67,7 @@
   	</style>
   	<div id="toaster" class="toast" style="display:none">Podatki so bili vnešeni v EHR bazo!</div>
   	<div class="form-group">
-  		<label for="sel1">Izberi pacienta:</label>
+  		<label for="sel1">Izberite pacienta:</label>
 		<select class="form-control" id="sel1">
     		<option value="0">Janez Novak</option>
 			<option value="1">Lojze Zelenko</option>
@@ -78,10 +78,8 @@
 	<hr>
 	<div>
 		<div id="grafHeader"></div>
-		
 		<script>
 		google.charts.load('current', {'packages':['gauge','corechart','bar']});
-		//google.charts.load('current', {packages: ['corechart', 'bar']});
 		</script>
 		
 		<div id="zdravje"></div>
@@ -90,22 +88,18 @@
 
 		<div id="prvigraf"></div>
 		<div id="chart_div" align="center"></div>
+
 		<br>
+
 		<div id="drugigraf"></div>
 		<div id="chart_div2" align="center"></div>
-		
-	
-
-
 	</div>
-	
+
 	<div align="center">
 		<div id="mapHeader"></div>
 		<div id="mapContent"></div>
 		<div align="center" id="map" style="width:80%;height:350px;"></div>
 		<br><br>
-
-
 	</div>
 
 

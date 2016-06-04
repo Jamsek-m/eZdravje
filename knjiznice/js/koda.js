@@ -18,7 +18,7 @@ function povejBMIKat(BMI){
 	}
 	if(BMI > 18.5 && BMI <= 25){
 		debelPacient = false;
-		return "Imate normalen BMI";
+		return "Imate normalen ITM";
 	}
 	if(BMI > 25 && BMI <= 30){
 		debelPacient = true;
@@ -184,7 +184,7 @@ function narisiGrafe(){
 		"<a href='http://www.hujsanje.info/'><img src='pictures/hujsanje.info.png'></a><br><br>";
 	}
 	if(bolanPacient){
-		vsebinaMap += "<br><p>Vaši vitalni znaki odstopajo od priporočenih vrednost. Predlagamo vam, da obiščete najbližjo bolnišnico.</p><br>";
+		vsebinaMap += "<br><p>Vaši vitalni znaki odstopajo od priporočenih vrednost. Predlagamo Vam, da obiščete najbližjo bolnišnico.</p><br>";
 	} else {
 		vsebinaMap += "<br><p>Čeprav so vaši vitalni znaki znotraj normalnih meja, je priporočljivo vedeti, kje je najbližja bolnišnica.</p><br>";
 	}
@@ -197,8 +197,8 @@ function narisiGrafe(){
 		if(skrito){
 			zdravjeDetail.innerHTML = "<div align='center' class='alert alert-info'>"+
 			"Vaša temperatura: <strong>"+temp+"</strong> | Normalna temperatura: <strong>36.6</strong><br>"+
-			"Vaš sistolični krvni tlak: <strong>"+sisTlak+"</strong> | Običajna meja: <strong>110 - 140</strong><br>"+
-			"Vaš diastolični krvni tlak: <strong>"+diasTlak+"</strong> | Običajna meja: <strong>60 - 90</strong></div>";
+			"Vaš sistolični krvni pritisk: <strong>"+sisTlak+"</strong> | Priporočena meja: <strong>110 - 140</strong><br>"+
+			"Vaš diastolični krvni pritisk: <strong>"+diasTlak+"</strong> | Priporočena meja: <strong>60 - 90</strong></div>";
 			skrito = false;
 		} else{
 			zdravjeDetail.innerHTML = "";
