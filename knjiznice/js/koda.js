@@ -49,6 +49,9 @@ var pacienti = [
 
 var debelPacient = false;
 var bolanPacient = false;
+var najblizjaBolnica = -1;
+var globalX = 0;
+var globalY = 0;
 
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
@@ -266,6 +269,7 @@ function narisiGrafe(){
 	readTextFile("bolnice.json");
 
 }
+var obj;
 
 function readTextFile(file){
 	var rawFile = new XMLHttpRequest();
@@ -277,13 +281,14 @@ function readTextFile(file){
 			if(rawFile.status === 200 || rawFile.status == 0)
 			{
 				var allText = rawFile.responseText;
-				var obj = JSON.parse(allText);
+				obj = JSON.parse(allText);
 				mx = parseFloat(obj.bolnice[7].lat);
 				my = parseFloat(obj.bolnice[7].lng);
 				console.log(mx+" : "+my);
 				initMap(mx,my);
 				getLocation();
 				initMarker(obj);
+				
 			}
 		}
 	}
@@ -312,10 +317,33 @@ function getLocation() {
 function showPosition(position) {
 	var x = position.coords.latitude;
 	var y = position.coords.longitude;
+	globalX = x;
+	globalY = y;
 	var LatLng = new google.maps.LatLng(x,y);
 	map.setCenter(LatLng);
 	initMarkerLocation(LatLng);
+	var closest = najdiNajblizjoBolnico(obj);
+	driveInstructions(LatLng, closest);
 }
+
+function driveInstructions(start, dest){
+	var directions = new google.maps.DirectionsRenderer({
+		map: map
+	});
+	var request = {
+		destination: dest,
+		origin: start,
+		travelMode: google.maps.TravelMode.DRIVING
+	};
+	var directService = new google.maps.DirectionsService();
+	directService.route(request, function(response, status){
+		if(status == google.maps.DirectionsStatus.OK){
+			directions.setDirections(response);
+		}
+	});
+}
+
+
 
 function initMarker(obj){
 	for(var i = 0; i < obj.bolnice.length; i++){
@@ -348,4 +376,32 @@ function initMap(x,y) {
 		zoom: 14,
 		center: location
 	});
+}
+
+function rad(x){
+	return x*Math.PI/180;
+}
+
+function najdiNajblizjoBolnico(obj){
+	var R = 6371;
+	var distances = [];
+	var x = globalX;
+	var y = globalY;
+
+	for(var i = 0; i < obj.bolnice.length;i++){
+		var mlat = obj.bolnice[i].lat;
+		var mlng = obj.bolnice[i].lng;
+		var dLat = rad(mlat-x);
+		var dLong = rad(mlng-y);
+		var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(x)) * Math.cos(rad(x)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+        if ( najblizjaBolnica == -1 || d < distances[najblizjaBolnica] ) {
+            najblizjaBolnica = i;
+        }
+    }
+	//alert(obj.bolnice[najblizjaBolnica].ime);
+	return new google.maps.LatLng(obj.bolnice[najblizjaBolnica].lat, obj.bolnice[najblizjaBolnica].lng);
 }
