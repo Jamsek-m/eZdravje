@@ -20,18 +20,23 @@ function racunajBMI(teza, visina){
 }
 function povejBMIKat(BMI){
 	if(BMI <= 18.5){
+		debelPacient = false;
 		return "Trpite za podhranjenostjo";
 	}
 	if(BMI > 18.5 && BMI <= 25){
+		debelPacient = false;
 		return "Imate normalen BMI";
 	}
 	if(BMI > 25 && BMI <= 30){
+		debelPacient = true;
 		return "Imate povečano telesno maso";
 	}
 	if(BMI > 30 && BMI <= 40){
+		debelPacient = true;
 		return "Trpite za debelostjo";
 	}
 	if(BMI > 40){
+		debelPacient = true;
 		return "Trpite za hudo debelostjo";
 	}
 }
@@ -41,6 +46,9 @@ var pacienti = [
 			{id: 2, ime: "Lojze Zelenko", visina: 170, teza:60, temperatura:42.0, sisTlak:150, diasTlak:90, ehrId : ""},
 			{id: 3, ime: "Ivan Grozni", visina: 150, teza:100, temperatura:36.6, sisTlak:120, diasTlak:90, ehrId : ""}
 ];
+
+var debelPacient = false;
+var bolanPacient = false;
 
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
@@ -159,8 +167,10 @@ function preveriZdravje(temp, sisTlak, diasTlak){
 		}
 	}	
 	if(zdrav){
+		bolanPacient = false;
 		return rezultatZdrav;
 	}
+	bolanPacient = true;
 	return rezultatBolan;
 }
 
@@ -177,8 +187,12 @@ function narisiGrafe(){
 
 	var mapHeader = document.getElementById('mapHeader');
 	var grafHeader = document.getElementById('grafHeader');
-	mapHeader.innerHTML = "<hr><h3 align='center'>Napotki za zdravljenje</h3>";
 	grafHeader.innerHTML = "<h3 align='center'>Vizualizacija vitalnih znakov</h3>";
+
+	if(bolanPacient){
+		mapHeader.innerHTML = "<hr><h3 align='center'>Napotki za zdravljenje</h3>";
+	}
+	
 
 	var zdravjediv = document.getElementById('zdravje');
 	var pokazatelj = preveriZdravje(temp, sisTlak, diasTlak);
@@ -203,11 +217,8 @@ function narisiGrafe(){
 	    }
 	});
 	
-
-
 	var bmidiv = document.getElementById('bmi');
 	bmidiv.innerHTML = "<div align='center' class='well'>Vaš BMI (Indeks telesne mase) je: <strong>"+bmi+"</strong> - "+BMIkat+".</div>";
-
 
 	var prvigraf = document.getElementById('prvigraf').innerHTML = "<h4 align='center'>Telesna temperatura</h4>";
  	google.charts.setOnLoadCallback(drawChart);
@@ -252,5 +263,89 @@ function narisiGrafe(){
 			  var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
 			  chart.draw(data, options);
 	}
+	readTextFile("bolnice.json");
+
 }
 
+function readTextFile(file){
+	var rawFile = new XMLHttpRequest();
+	rawFile.open("GET", file, false);
+	rawFile.onreadystatechange = function ()
+	{
+		if(rawFile.readyState === 4)
+		{
+			if(rawFile.status === 200 || rawFile.status == 0)
+			{
+				var allText = rawFile.responseText;
+				var obj = JSON.parse(allText);
+				mx = parseFloat(obj.bolnice[7].lat);
+				my = parseFloat(obj.bolnice[7].lng);
+				console.log(mx+" : "+my);
+				initMap(mx,my);
+				getLocation();
+				initMarker(obj);
+			}
+		}
+	}
+	rawFile.send(null);
+}
+
+var openFile = function(event) {
+		var input = event.target;
+
+		var reader = new FileReader();
+		reader.onload = function(){
+		  var text = reader.result;
+		  var node = document.getElementById('output');
+		  node.innerText = text;
+		  console.log(reader.result.substring(0, 200));
+		};
+		reader.readAsText(input.files[0]);
+};
+
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	}
+}
+
+function showPosition(position) {
+	var x = position.coords.latitude;
+	var y = position.coords.longitude;
+	var LatLng = new google.maps.LatLng(x,y);
+	map.setCenter(LatLng);
+	initMarkerLocation(LatLng);
+}
+
+function initMarker(obj){
+	for(var i = 0; i < obj.bolnice.length; i++){
+		var x = obj.bolnice[i].lat;
+		var y = obj.bolnice[i].lng;
+		var location = new google.maps.LatLng(x,y);
+		marker = new google.maps.Marker({
+			position: location,
+			map: map,
+			title: obj.bolnice[i].ime
+		});
+	}
+}
+
+function initMarkerLocation(latlng){
+	var image = 'myPosition-small.png';
+	marker = new google.maps.Marker({
+		position: latlng,
+		map:map,
+		icon: image,
+		title: "Your location!"
+	});
+}
+
+var map;
+function initMap(x,y) {
+	console.log("LOG: "+x+", "+y);
+	var location = new google.maps.LatLng(x,y);
+	map = new google.maps.Map(document.getElementById('map'), {
+		zoom: 14,
+		center: location
+	});
+}
