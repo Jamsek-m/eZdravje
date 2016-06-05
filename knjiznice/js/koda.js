@@ -184,7 +184,7 @@ function narisiGrafe(){
 		"<a href='http://www.hujsanje.info/'><img src='pictures/hujsanje.info.png'></a><br><br>";
 	}
 	if(bolanPacient){
-		vsebinaMap += "<br><p>Vaši vitalni znaki odstopajo od priporočenih vrednost. Predlagamo Vam, da obiščete najbližjo bolnišnico.</p><br>";
+		vsebinaMap += "<br><p>Vaši vitalni znaki odstopajo od priporočenih vrednosti. Predlagamo Vam, da obiščete najbližjo bolnišnico.</p><br>";
 	} else {
 		vsebinaMap += "<br><p>Čeprav so vaši vitalni znaki znotraj normalnih meja, je priporočljivo vedeti, kje je najbližja bolnišnica.</p><br>";
 	}
